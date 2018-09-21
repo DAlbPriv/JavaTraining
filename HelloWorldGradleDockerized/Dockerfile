@@ -36,3 +36,13 @@ WORKDIR /home/gradle
 RUN set -o errexit -o nounset \
 	&& echo "Testing Gradle installation" \
 	&& gradle --version
+
+RUN mkdir ~/gitCode
+RUN cd ~/gitCode && \
+		curl -LOk https://github.com/DAlbPriv/JavaTraining/archive/develop.zip && \
+		unzip develop.zip && rm develop.zip && \
+		cd JavaTraining-develop && cd HelloWorldGradleDockerized
+				
+		
+RUN gradle clean
+RUN ls -la
