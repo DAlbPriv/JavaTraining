@@ -41,8 +41,7 @@ RUN mkdir ~/gitCode
 RUN cd ~/gitCode && \
 		curl -LOk https://github.com/DAlbPriv/JavaTraining/archive/develop.zip && \
 		unzip develop.zip && rm develop.zip && \
-		cd JavaTraining-develop && cd HelloWorldGradleDockerized
+		cd JavaTraining-develop && cd HelloWorldGradleDockerized && \
+		gradle clean build
 				
-		
-RUN gradle clean
-RUN ls -la
+RUN ls -la ~/gitCode/JavaTraining-develop/HelloWorldGradleDockerized

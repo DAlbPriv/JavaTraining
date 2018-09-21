@@ -10,6 +10,11 @@
 apply plugin: 'java-library'
 apply plugin:'base'
 
+jar {
+    manifest {
+        attributes 'Main': 'com.privalia.principal'
+    }
+}
 
 // In this section you declare where to find the dependencies of your project
 repositories {
