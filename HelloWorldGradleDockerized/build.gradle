@@ -12,7 +12,7 @@ apply plugin:'base'
 
 jar {
     manifest {
-        attributes 'Main': 'com.privalia.principal'
+        attributes 'Main-class': 'com.privalia.principal.Main'
     }
 }
 

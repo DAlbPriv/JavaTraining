@@ -1,37 +1,28 @@
-FROM openjdk:8-jre
+FROM java:8-jdk
+MAINTAINER Pierre Vincent
 
-CMD ["gradle"]
+# In case someone loses the Dockerfile
+RUN rm -rf /etc/Dockerfile
+ADD Dockerfile /etc/Dockerfile
 
-ENV GRADLE_HOME /opt/gradle
-ENV GRADLE_VERSION 4.10.1
+# Gradle
+WORKDIR /usr/bin
+RUN wget https://services.gradle.org/distributions/gradle-2.2.1-all.zip && \
+    unzip gradle-2.2.1-all.zip && \
+    ln -s gradle-2.2.1 gradle && \
+    rm gradle-2.2.1-all.zip
 
-ARG GRADLE_DOWNLOAD_SHA256=e53ce3a01cf016b5d294eef20977ad4e3c13e761ac1e475f1ffad4c6141a92bd
-RUN set -o errexit -o nounset \
-	&& echo "Downloading Gradle" \
-	&& wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-	\
-	&& echo "Checking download hash" \
-	&& echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum --check - \
-	\
-	&& echo "Installing Gradle" \
-	&& unzip gradle.zip \
-	&& rm gradle.zip \
-	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
-	&& ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-	\
-	&& echo "Adding gradle user and group" \
-	&& groupadd --system --gid 1000 gradle \
-	&& useradd --system --gid gradle --uid 1000 --shell /bin/bash --create-home gradle \
-	&& mkdir /home/gradle/.gradle \
-	&& chown --recursive gradle:gradle /home/gradle \
-	\
-	&& echo "Symlinking root Gradle cache to gradle Gradle cache" \
-	&& ln -s /home/gradle/.gradle /root/.gradle
+# Set Appropriate Environmental Variables
+ENV GRADLE_HOME /usr/bin/gradle
+ENV PATH $PATH:$GRADLE_HOME/bin
 
-# Create Gradle volume
-USER gradle
-VOLUME "/home/gradle/.gradle"
-WORKDIR /home/gradle
+# Default command is "/usr/bin/gradle -version" on /app dir
+# (ie. Mount project at /app "docker --rm -v /path/to/app:/app gradle <command>")
+RUN mkdir /app
+WORKDIR /app
+ENTRYPOINT ["gradle"] 
+CMD ["-version", "-clean", "-war"]
+
 
 RUN set -o errexit -o nounset \
 	&& echo "Testing Gradle installation" \
