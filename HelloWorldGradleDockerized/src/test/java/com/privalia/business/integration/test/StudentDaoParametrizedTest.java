@@ -13,5 +13,5 @@ import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
 public class StudentDaoParametrizedTest {
-
+	
 }
