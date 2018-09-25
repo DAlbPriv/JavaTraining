@@ -28,19 +28,19 @@ public class CalculatorUnitTest {
 	@Test
 	public void testSubstract(){
 		when(iCalculator.substract(3, 2)).thenReturn(1);
-		assertTrue(iCalculator.sum(3, 2) == 1);
+		assertTrue(iCalculator.substract(3, 2) == 1);
 	}
 	
 	@Test
 	public void testMultiply(){
 		when(iCalculator.multiply(3, 2)).thenReturn(6);
-		assertTrue(iCalculator.sum(2, 3) == 6);
+		assertTrue(iCalculator.multiply(2, 3) == 6);
 	}
 	
 	@Test
 	public void testDivide(){
 		when(iCalculator.divide(4, 2)).thenReturn(2);
-		assertTrue(iCalculator.sum(4, 2) == 2);
+		assertTrue(iCalculator.divide(4, 2) == 2);
 	}
 	
 	
