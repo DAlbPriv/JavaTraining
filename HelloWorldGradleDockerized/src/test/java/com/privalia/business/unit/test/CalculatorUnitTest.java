@@ -22,7 +22,7 @@ public class CalculatorUnitTest {
 	@Test
 	public void testAdd(){
 		when(iCalculator.sum(3, 2)).thenReturn(5);
-		assertTrue(iCalculator.sum(2, 3) == 5);
+		assertTrue(iCalculator.sum(3, 2) == 5);
 	}
 	
 	@Test
@@ -34,7 +34,7 @@ public class CalculatorUnitTest {
 	@Test
 	public void testMultiply(){
 		when(iCalculator.multiply(3, 2)).thenReturn(6);
-		assertTrue(iCalculator.multiply(2, 3) == 6);
+		assertTrue(iCalculator.multiply(3, 2) == 6);
 	}
 	
 	@Test

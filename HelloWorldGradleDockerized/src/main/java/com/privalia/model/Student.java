@@ -42,6 +42,13 @@ public class Student {
 	
 	public Student(){
 	}
+	
+	/**
+	 * @author Daniel Albendín
+	 * 
+	 * The output format of this method is the following:
+	 * Student [idStudent=, name=, surname=, age=]
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -66,6 +73,7 @@ public class Student {
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
