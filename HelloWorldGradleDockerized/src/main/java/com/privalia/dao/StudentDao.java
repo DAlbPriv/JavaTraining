@@ -1,6 +1,7 @@
 package com.privalia.dao;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -26,13 +27,44 @@ public class StudentDao implements IDao<Student>{
 
 	@Override
 	public Student add(Student model) throws IOException {
-		String filename = prop.getProperty("filename");
 		StringBuilder studentContent = formatStudentAsCSV(model);
-		FileOutputStream filewriter = new FileOutputStream(filename,true);
+		FileOutputStream filewriter = openWriteFile(true);
 		filewriter.write(studentContent.toString().getBytes());
-		filewriter.flush();
-		filewriter.close();
+		PersistInDisk(filewriter);
 		return null;
+	}
+	
+	
+	/**
+	 * This method reads the sink filename and instantiate a FileOutputStream to write 
+	 * in that file.
+	 * 
+	 * @author Daniel Albendín
+	 * @param append It indicates if the action on the file will be either append or overwite. 
+	 * 			true: append, false: overwrite
+	 * @return FileOutputStream object ready to be used
+	 */
+	private FileOutputStream openWriteFile(boolean append) {
+		FileOutputStream filewriter = null;
+		String filename = prop.getProperty("filename");
+		try {
+			filewriter = new FileOutputStream(filename,true);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return filewriter;
+	}
+	
+
+	private void PersistInDisk(FileOutputStream filewriter) {
+		try {
+			filewriter.flush();
+			filewriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private StringBuilder formatStudentAsCSV(Student model){

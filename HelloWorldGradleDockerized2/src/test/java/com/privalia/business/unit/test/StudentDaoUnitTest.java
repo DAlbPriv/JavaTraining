@@ -22,15 +22,5 @@ public class StudentDaoUnitTest {
 		MockitoAnnotations.initMocks(this);
 	}
 		
-	@Test
-	public void testAdd(){
-		try {
-			when(iDao.add(new Student(1,"abc","def",1))).thenReturn(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	
 }
