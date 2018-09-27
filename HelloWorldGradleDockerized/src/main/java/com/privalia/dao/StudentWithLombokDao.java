@@ -1,42 +1,58 @@
 package com.privalia.dao;
 
+import static com.privalia.utils.FileUtil.createFile;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Logger;
-import com.privalia.model.Student;
+
+import org.apache.log4j.Logger;
+
+import com.privalia.model.StudentWithLombok;
 import com.privalia.utils.FileUtil;
-import com.privalia.utils.PropertiesFile;
 
-public class StudentDao implements IDao<Student>{
+public class StudentWithLombokDao implements IDao<StudentWithLombok>{
 
+	static final Logger logger = Logger.getLogger(StudentWithLombokDao.class);
 	static Properties prop = null;
-	static FileInputStream input = null;
+	static InputStream input = null;
 
+	static {
+		prop = new Properties();
+		try {
+			input = StudentWithLombokDao.class.getResourceAsStream("/config.properties");
+			prop.load(input);
+		}catch(IOException e) {
+			
+		}
+	}
+		
 	@Override 
-	public Student add(Student student) throws IOException {
+	public StudentWithLombok add(StudentWithLombok student) throws IOException {
 		String fileName = prop.getProperty("filename");
-		FileUtil.createFile(fileName);
+		createFile(fileName);
 		
 		try(FileWriter fileWriter = new FileWriter(fileName,true);
 				BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)){
-			bufferedWriter.write(student.toString());
-			bufferedWriter.write(System.lineSeparator());
+					bufferedWriter.write(student.toString());
+					bufferedWriter.write(System.lineSeparator());
+					bufferedWriter.flush();
+					bufferedWriter.close();
 		}catch(IOException e) {
+			logger.error(e.getMessage());
+			throw e;
 		}
-		
 			return getLastStudentByID(student.getIdStudent());
 	}
 	
-	private Student getLastStudentByID(int id) throws IOException{
+	private StudentWithLombok getLastStudentByID(int id) throws IOException{
 		BufferedReader bufferedReader = null;
-		Student student = new Student();
+		StudentWithLombok student = new StudentWithLombok();
 		try {
 			bufferedReader = new BufferedReader(new FileReader(prop.getProperty("filename")));
 			String linea;
